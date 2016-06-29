@@ -312,8 +312,10 @@ angular.module('akoenig.deckgrid').factory('Deckgrid', [
                     self.$$scope.columns[column] = [];
                 }
 
-                card.$index = index;
-                self.$$scope.columns[column].push(card);
+                if(card && typeof card === 'object'){
+                    card.$index = index;
+                    self.$$scope.columns[column].push(card);
+                }
             });
         };
 
