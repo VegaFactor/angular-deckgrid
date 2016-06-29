@@ -1,3 +1,8 @@
+## NOTE (forked)
+I've forked repo and made changes to use `ng-transclude` instead of `ng-include` which fixes scope issues for transcluded elements - at the cost of deprecating using `cardTemplate` and `cardTemplateString`.
+
+And you'll have to use $parent.card instead of card when referencing the element in the transcluded item.
+
 # angular-deckgrid
 
 A lightweight masonry-like grid for AngularJS.
