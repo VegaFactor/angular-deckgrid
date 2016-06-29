@@ -1,4 +1,4 @@
-/*! angular-deckgrid (v0.5.0) - Copyright: 2013 - 2014, André König (andre.koenig@posteo.de) - MIT */
+/*! vf-angular-deckgrid (v0.5.1) - Copyright: 2013 - 2014, André König (andre.koenig@posteo.de) - MIT */
 /*
  * angular-deckgrid
  *
@@ -43,7 +43,7 @@ angular.module('akoenig.deckgrid').factory('DeckgridDescriptor', [
     'Deckgrid',
     '$templateCache',
 
-    function initialize (Deckgrid, $templateCache) {
+    function initialize (Deckgrid) {
 
         'use strict';
 
@@ -56,7 +56,7 @@ angular.module('akoenig.deckgrid').factory('DeckgridDescriptor', [
             this.restrict = 'AE';
 
             this.template = '<div data-ng-repeat="column in columns" class="{{layout.classList}}">' +
-                                '<div data-ng-repeat="card in column" data-ng-include="cardTemplate"></div>' +
+                                '<div data-ng-repeat="card in column" ng-transclude></div>' +
                             '</div>';
 
             this.scope = {
@@ -95,46 +95,9 @@ angular.module('akoenig.deckgrid').factory('DeckgridDescriptor', [
          * The deckgrid link method. Will instantiate the deckgrid.
          *
          */
-        Descriptor.prototype.$$link = function $$link (scope, elem, attrs, nullController, transclude) {
-            var templateKey = 'deckgrid/innerHtmlTemplate' + (++this.$$templateKeyIndex) + '.html';
-
+        Descriptor.prototype.$$link = function $$link (scope, elem) {
             scope.$on('$destroy', this.$$destroy.bind(this));
-
-            if (angular.isUndefined(attrs.cardtemplate)) {
-                if (angular.isUndefined(attrs.cardtemplatestring)) {
-                    // use the provided inner html as template
-                    transclude(scope, function onTransclude (innerHTML) {
-                        var extractedInnerHTML = [],
-                            i = 0,
-                            len = innerHTML.length,
-                            outerHTML;
-
-                        for (i; i < len; i = i + 1) {
-                            outerHTML = innerHTML[i].outerHTML;
-
-                            if (angular.isDefined(outerHTML)) {
-                                extractedInnerHTML.push(outerHTML);
-                            }
-                        }
-
-                        $templateCache.put(templateKey, extractedInnerHTML.join());
-                    });
-                } else {
-                    // use the provided template string
-                    //
-                    // note: the attr is accessed via the elem object, as the attrs content
-                    // is already compiled and thus lacks the {{...}} expressions
-                    $templateCache.put(templateKey, elem.attr('cardtemplatestring'));
-                }
-
-                scope.cardTemplate = templateKey;
-            } else {
-                // use the provided template file
-                scope.cardTemplate = attrs.cardtemplate;
-            }
-
             scope.mother = scope.$parent;
-
             this.$$deckgrid = Deckgrid.create(scope, elem[0]);
         };
 
