@@ -87,7 +87,7 @@ angular.module('akoenig.deckgrid').factory('Deckgrid', [
                 mediaQueries = [];
 
             stylesheets = Array.prototype.concat.call(
-                Array.prototype.slice.call(document.querySelectorAll('style[type=\'text/css\']')),
+                Array.prototype.slice.call(document.querySelectorAll('style')),
                 Array.prototype.slice.call(document.querySelectorAll('link[rel=\'stylesheet\']'))
             );
 
